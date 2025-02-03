@@ -1,11 +1,26 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text } from "react-native";
+import React, { useEffect } from "react";
 import "./global.css";
-import { Slot } from 'expo-router';
+import { Slot, SplashScreen } from "expo-router";
+import { useFonts } from "expo-font";
 
+SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
-  return <Slot/>
-}
+  const [ fontsLoaded, error ] = useFonts({
+    "WorkSans-Black": require("../assets/fonts/WorkSans-Black.ttf"),
+    "WorkSans-Light": require("../assets/fonts/WorkSans-Light.ttf"),
+    "WorkSans-Medium": require("../assets/fonts/WorkSans-Medium.ttf"),
+  });
 
-export default RootLayout
+  useEffect(() => {
+    if (error) throw ErrorUtils
+    if (fontsLoaded) SplashScreen.hideAsync()
+  },[fontsLoaded, error])
+
+  if (!fontsLoaded && !error) return null;
+  
+  return <Slot />;
+};
+
+export default RootLayout;
